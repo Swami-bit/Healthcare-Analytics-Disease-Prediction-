@@ -1,6 +1,3 @@
-# Diabetes Prediction Project
-# Author: Swami Ganesh Deshpande, Roll No: 72
-
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -13,26 +10,19 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 
-# Load dataset
-df = pd.read_csv("diabetes.csv")  # download from Kaggle
+df = pd.read_csv("diabetes.csv")
 
-# Display first 5 rows
 print("First 5 rows of dataset:")
 print(df.head())
 
-# Basic info
 print("\nDataset Info:")
 print(df.info())
-
-# Check for missing values
 print("\nMissing values in dataset:")
 print(df.isnull().sum())
 
-# Features and Target
-X = df.drop("Outcome", axis=1)  # Features
-y = df["Outcome"]               # Target (0 = No Diabetes, 1 = Diabetes)
+X = df.drop("Outcome", axis=1)
+y = df["Outcome"]               
 
-# Scale features
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
@@ -42,18 +32,13 @@ X_train, X_test, y_train, y_test = train_test_split(
 
 print("Training set size:", X_train.shape)
 print("Testing set size:", X_test.shape)
-
-# Logistic Regression
 log_model = LogisticRegression()
 log_model.fit(X_train, y_train)
 y_pred_log = log_model.predict(X_test)
 
-# Random Forest
 rf_model = RandomForestClassifier(n_estimators=100, random_state=42)
 rf_model.fit(X_train, y_train)
 y_pred_rf = rf_model.predict(X_test)
-
-# Support Vector Machine (SVM)
 svm_model = SVC(kernel='linear')
 svm_model.fit(X_train, y_train)
 y_pred_svm = svm_model.predict(X_test)
@@ -67,12 +52,10 @@ def evaluate_model(name, y_test, y_pred):
     plt.title(f"Confusion Matrix - {name}")
     plt.show()
 
-# Evaluate all models
 evaluate_model("Logistic Regression", y_test, y_pred_log)
 evaluate_model("Random Forest", y_test, y_pred_rf)
 evaluate_model("SVM", y_test, y_pred_svm)
 
-# Example patient data: [Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age]
 new_data = np.array([[2, 120, 70, 20, 79, 25.5, 0.5, 30]])
 new_data_scaled = scaler.transform(new_data)
 
@@ -101,4 +84,5 @@ plt.bar(models, accuracies, color=['blue','green','orange'])
 plt.title("Model Comparison")
 plt.ylabel("Accuracy")
 plt.show()
+
 
